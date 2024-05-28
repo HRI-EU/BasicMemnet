@@ -13,7 +13,7 @@ roles. For example, imagine we have a person 1 (which is of type _Subject_) that
 another person 2. As person 1 executes the action, it jumps into the role of an actor, while 
 it also remains of type _Subject_. Person 2, also of type _Subject_, is now in the role of a receiver, as it is the target 
 location of the handed over glass. In this implementation of Memory Nets, such a role is indicated by a dedicated link 
-"has_receiver". In the lower part of Figure 1, the resulting Memory Nets graph is illustrated.
+"has_recipient". In the lower part of Figure 1, the resulting Memory Nets graph is illustrated.
 
 <figure>
     <img src="data/memnet.png" alt="Memory Nets Concept Domains" style="width:800px;">
@@ -24,7 +24,7 @@ location of the handed over glass. In this implementation of Memory Nets, such a
 
 The following sample JSON-file shows how to create an initial Memory Nets Graph as list of dictionaries. Each single dictionary is represents
 a node in the graph. Nodes can be linked by specifying the parent node attributes. It is necessary to use a unique identifier,
-like a uuid or synset - if WordNet is used (cf. [Memeory Nets Example](https://hri-gitlab.honda-ri.de/deigmoel/memory_draft/-/blob/main/examples/example.py?ref_type=heads#L42)
+like an uuid or synset - if WordNet is used (cf. [Memory Nets Example](https://github.com/HRI-EU/BasicMemnet/blob/master/examples/example.py#L42)
 ). You can assign any attributes to the node providing ```node_attributes``` as dictionary.
 To ensure a proper reasoning, you **must** use at least the node attributes provided below. Optionally you can attach ```states```
 in natural language, like "green" or "tall". 
