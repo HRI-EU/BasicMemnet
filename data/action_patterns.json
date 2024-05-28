@@ -1,0 +1,69 @@
+[
+  {
+    "link": "spec_to",
+    "parent_attributes": {"accessid": ["hand_over.v.01"]},
+    "node_attributes": {
+      "type": "action",
+      "utterances": ["hand over"],
+      "timestamp": 1714741106.3516276,
+      "memory": "stm",
+      "uuid": "658021a16eccd76b333ec506"
+    }
+  },
+  {
+    "link": "spec_to",
+    "parent_attributes": {"accessid": ["person.n.01"]},
+    "node_attributes": {
+      "type": "agent",
+      "utterances": ["person 1"],
+      "timestamp": 1714741106.3516276,
+      "states": ["busy"],
+      "memory": "stm",
+      "uuid": "65818e866eccd773b15e89d8"
+    }
+  },
+  {
+    "link": "spec_to",
+    "parent_attributes": {"accessid": ["object.n.01"]},
+    "node_attributes": {
+      "type": "object",
+      "utterances": ["glass"],
+      "timestamp": 1714741106.3516276,
+      "memory": "stm",
+      "uuid": "658190c06eccd77ab5dc84d4"
+    }
+  },
+  {
+    "link": "spec_to",
+    "parent_attributes": {"accessid": ["person.n.01"]},
+    "node_attributes": {
+      "type": "agent",
+      "utterances": ["peron 2"],
+      "timestamp": 1714741106.3516276,
+      "states": ["busy"],
+      "memory": "stm",
+      "uuid": "658190c06eccd77ab5dc84d5"
+    }
+  },
+  {
+    "link": "has_recipient",
+    "parent_attributes": {"uuid": "658021a16eccd76b333ec506"},
+    "node_attributes": {
+      "uuid": "65818e866eccd773b15e89d8"
+    }
+  },
+  {
+    "link": "has_actor",
+    "parent_attributes": {"uuid": "658021a16eccd76b333ec506"},
+    "node_attributes": {
+      "uuid": "658190c06eccd77ab5dc84d5"
+    }
+  },
+  {
+    "link": "has_object",
+    "parent_attributes": {"uuid": "658021a16eccd76b333ec506"},
+    "node_attributes": {
+      "uuid": "658190c06eccd77ab5dc84d4"
+    }
+  }
+]
