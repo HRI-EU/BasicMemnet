@@ -60,6 +60,11 @@ from bson import ObjetID
 uuid = str(ObjectID())
 ``` 
 
+### Setup
+With
+* pip: `pip install .`
+* poetry: `poetry install`
+
 ### Example
 
 You can find an example script that loads the action pattern example in examples/example.py. In the constructor, you 
@@ -67,14 +72,9 @@ can switch between making use of WordNet or not. By default, it is switched off 
 You can try this example by running, create_venv.sh is only required once. 
 
 ```bash
-bash create_venv.sh
-```
-
-```bash
 bash run_example.sh
 ```
 #### References
-
 1. Eggert, J., Deigmoeller, J., Fischer, L., and Richter, A. (2019). Memory Nets: Knowledge representation
 for intelligent agent operations in real world. International Joint Conference on Knowledge Discovery, Knowledge 
 Engineering, and Knowledge Management.

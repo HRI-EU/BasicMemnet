@@ -35,15 +35,22 @@
 # POSSIBILITY OF SUCH DAMAGE.
 
 import os
-import sys
-from src import memnet
-from src import plot_graph
 
-md = memnet.DSL(use_wordnet=True, json_file=os.path.join(sys.path[0], "data", "action_patterns.json"))
+from os.path import abspath, dirname
+from basicmemnet import memnet
+from basicmemnet import plot_graph
+
+
+action_patterns_path = os.path.join(
+    dirname(dirname(abspath(__file__))), "data", "action_patterns.json"
+)
+md = memnet.DSL(use_wordnet=True, json_file=action_patterns_path)
 pg = plot_graph.PlotGraph()
 
-sub_graphs = md.get_stm_actions(action_attributes={"utterances": ["hand over"]},
-                                object_attributes={"utterances": ["glass"]})
+sub_graphs = md.get_stm_actions(
+    action_attributes={"utterances": ["hand over"]},
+    object_attributes={"utterances": ["glass"]},
+)
 pg.plot(sub_graphs)
 
 
@@ -52,4 +59,3 @@ pg.plot(sub_graphs)
 
 sub_graphs = md.get_ltm_objects(object_attributes={"utterances": ["glass"]})
 pg.plot(sub_graphs)
-
