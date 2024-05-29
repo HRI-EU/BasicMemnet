@@ -65,7 +65,8 @@ uuid = str(ObjectID())
 ``` 
 
 ### Setup
-* pip: `pip install -e .`
+
+* pip: `python -m venv venv && source venv/bin/activate && pip install .`
 * poetry: `poetry install`
 
 ### Example
