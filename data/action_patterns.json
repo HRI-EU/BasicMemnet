@@ -38,7 +38,7 @@
     "parent_attributes": {"accessid": ["person.n.01"]},
     "node_attributes": {
       "type": "agent",
-      "utterances": ["peron 2"],
+      "utterances": ["person 2"],
       "timestamp": 1714741106.3516276,
       "states": ["busy"],
       "memory": "stm",
