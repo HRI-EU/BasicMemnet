@@ -39,7 +39,7 @@ import sys
 from src import memnet
 from src import plot_graph
 
-md = memnet.DSL(use_wordnet=True, json_file=os.path.join(sys.path[0], "data", "action_patterns.json"))
+md = memnet.DSL(use_wordnet=False, json_file=os.path.join(sys.path[0], "data", "action_patterns.json"))
 pg = plot_graph.PlotGraph()
 
 sub_graphs = md.get_stm_actions(action_attributes={"utterances": ["hand over"]},

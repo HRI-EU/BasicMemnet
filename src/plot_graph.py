@@ -97,7 +97,13 @@ class PlotGraph:
                     r = g = b = 0.0
                 colors.append((r, g, b, 0.2))
 
-            pos = nx.nx_pydot.pydot_layout(graph, prog="dot")
+                try:
+                    # Attempt to use pydot_layout
+                    pos = nx.nx_pydot.pydot_layout(graph, prog='dot')
+                except ImportError:
+                    # Fallback to spring_layout if pydot_layout is not available
+                    print("pydot_layout failed, using spring_layout instead.")
+                    pos = nx.spring_layout(graph)
 
             labels = dict()
             for n in graph.nodes:
