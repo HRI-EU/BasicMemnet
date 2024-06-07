@@ -34,22 +34,36 @@
 # IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import sys
-from src.basic_memnet import memnet
-from src.basic_memnet import plot_graph
+import setuptools
 
-md = memnet.DSL(use_wordnet=False, json_file=os.path.join(sys.path[0], "data", "action_patterns.json"))
-pg = plot_graph.PlotGraph()
+with open("README.md", "r") as file:
+    long_description = file.read()
 
-sub_graphs = md.get_stm_actions(action_attributes={"utterances": ["hand over"]},
-                                object_attributes={"utterances": ["glass"]})
-pg.plot(sub_graphs)
-
-
-sub_graphs = md.get_stm_objects(object_attributes={"utterances": ["glass"]})
-pg.plot(sub_graphs)
-
-sub_graphs = md.get_ltm_objects(object_attributes={"utterances": ["glass"]})
-pg.plot(sub_graphs)
-
+setuptools.setup(
+    name="basic_memnet",
+    version="0.1",
+    author="Honda Research Institute Europe",
+    author_email="info@honda-ri.de",
+    description="simple implementation of Memory Nets",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    url="https://github.com/HRI-EU/BasicMemnet",
+    classifiers=[
+        "Programming Language :: Python :: 3",
+    ],
+    include_package_data=True,  # include non-code files during installation
+    package_dir={"": "src"},
+    packages=setuptools.find_packages(where="src"),
+    install_requires=[
+        "matplotlib",
+        "networkx",
+        "pydot",
+        "nltk",
+        "bson"
+    ],
+    extras_require={
+        "dev": [
+            "black"
+        ],
+    },
+)

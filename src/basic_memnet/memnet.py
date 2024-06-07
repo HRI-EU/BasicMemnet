@@ -36,7 +36,7 @@
 
 import networkx as nx
 from networkx.algorithms import isomorphism
-from src import word2memnet
+from src.basic_memnet import word2memnet
 from bson import ObjectId
 import json
 import copy
