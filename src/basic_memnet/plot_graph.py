@@ -100,7 +100,7 @@ class PlotGraph:
                 try:
                     # Attempt to use pydot_layout
                     pos = nx.nx_pydot.pydot_layout(graph, prog='dot')
-                except ImportError:
+                except:
                     # Fallback to spring_layout if pydot_layout is not available
                     print("pydot_layout failed, using spring_layout instead.")
                     pos = nx.spring_layout(graph)

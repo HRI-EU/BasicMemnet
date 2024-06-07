@@ -60,19 +60,39 @@ from bson import ObjetID
 uuid = str(ObjectID())
 ``` 
 
+### Installation
+
+The easiest way to use BasicMemet is simply installing it into your own virtual environment or user site-packages with 
+
+```bash
+pip install git+https://github.com/HRI-EU/BasicMemnet
+```
+
+Alteratively, you can clone the whole repository with 
+```bash
+git clone https://github.com/HRI-EU/BasicMemnet.git
+cd BasicMemNet
+python -m venv venv
+
+# For Linux, use this line
+source venv/bin/activate
+
+# For Windows, use this line
+# It is also recommended to download GraphViz from https://graphviz.org/download, locate the Graphviz\bin folder and add it to the PATH variable in your system variables. Otherwise you will use the built-in graph layout from networkX.
+venv\Scripts\activate
+
+pip install -r requirements.txt
+```
+
 ### Example
 
 You can find an example script that loads the action pattern example in examples/example.py. In the constructor, you 
 can switch between making use of WordNet or not. By default, it is switched off for a fast initial run. 
-You can try this example by running, create_venv.sh is only required once. 
 
 ```bash
-bash create_venv.sh
+python -m examples.example
 ```
 
-```bash
-bash run_example.sh
-```
 #### References
 
 1. Eggert, J., Deigmoeller, J., Fischer, L., and Richter, A. (2019). Memory Nets: Knowledge representation

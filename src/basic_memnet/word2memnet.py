@@ -50,6 +50,8 @@ def download_wordnet(custom_folder: str):
 
 
 def create_wordnet_graph(limit=None):
+    custom_nltk_path = os.path.join(sys.path[0], "data")
+    download_wordnet(custom_nltk_path)
     G = nx.DiGraph()
     synset_id_map = {}  # Map from synset name to node ID
 
@@ -100,7 +102,3 @@ def create_wordnet_graph(limit=None):
                 )
 
     return G
-
-
-custom_nltk_path = os.path.join(sys.path[0], "data")
-download_wordnet(custom_nltk_path)
