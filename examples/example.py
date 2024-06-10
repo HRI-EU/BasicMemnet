@@ -39,11 +39,16 @@ import sys
 from basicmemnet import memnet
 from basicmemnet import plot_graph
 
-md = memnet.DSL(use_wordnet=False, json_file=os.path.join(sys.path[0], "data", "action_patterns.json"))
+md = memnet.DSL(
+    use_wordnet=False,
+    json_file=os.path.join(sys.path[0], "data", "action_patterns.json"),
+)
 pg = plot_graph.PlotGraph()
 
-sub_graphs = md.get_stm_actions(action_attributes={"utterances": ["hand over"]},
-                                object_attributes={"utterances": ["glass"]})
+sub_graphs = md.get_stm_actions(
+    action_attributes={"utterances": ["hand over"]},
+    object_attributes={"utterances": ["glass"]},
+)
 pg.plot(sub_graphs)
 
 
@@ -52,4 +57,3 @@ pg.plot(sub_graphs)
 
 sub_graphs = md.get_ltm_objects(object_attributes={"utterances": ["glass"]})
 pg.plot(sub_graphs)
-

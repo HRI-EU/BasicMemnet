@@ -42,18 +42,29 @@ from basicmemnet import memnet
 
 class TestMemNet(unittest.TestCase):
     def test_wordnet(self):
-        md = memnet.DSL(use_wordnet=True, json_file=os.path.join(sys.path[0], "data", "action_patterns.json"))
+        md = memnet.DSL(
+            use_wordnet=True,
+            json_file=os.path.join(sys.path[0], "data", "action_patterns.json"),
+        )
         sub_graphs = md.get_ltm_objects(object_attributes={"utterances": ["glass"]})
         self.assertEqual(len(sub_graphs), 7)
 
     def test_mtm_action(self):
-        md = memnet.DSL(use_wordnet=False, json_file=os.path.join(sys.path[0], "data", "action_patterns.json"))
-        sub_graphs = md.get_stm_actions(action_attributes={"utterances": ["hand over"]},
-                                        object_attributes={"utterances": ["glass"]})
+        md = memnet.DSL(
+            use_wordnet=False,
+            json_file=os.path.join(sys.path[0], "data", "action_patterns.json"),
+        )
+        sub_graphs = md.get_stm_actions(
+            action_attributes={"utterances": ["hand over"]},
+            object_attributes={"utterances": ["glass"]},
+        )
         self.assertEqual(len(sub_graphs), 1)
 
     def test_stm_objects(self):
-        md = memnet.DSL(use_wordnet=False, json_file=os.path.join(sys.path[0], "data", "action_patterns.json"))
+        md = memnet.DSL(
+            use_wordnet=False,
+            json_file=os.path.join(sys.path[0], "data", "action_patterns.json"),
+        )
         sub_graphs = md.get_stm_objects(object_attributes={"utterances": ["glass"]})
         self.assertEqual(len(sub_graphs), 1)
 

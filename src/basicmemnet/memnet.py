@@ -68,7 +68,9 @@ class DSL:
             for node in nodes:
                 node_attributes = node["node_attributes"]
                 parent_attributes = node.get("parent_attributes", {})
-                self.create_linked_node(parent_attributes, node_attributes, link_type=node["link"])
+                self.create_linked_node(
+                    parent_attributes, node_attributes, link_type=node["link"]
+                )
 
     def get_graphs(self):
         return [self.graph]
@@ -77,8 +79,8 @@ class DSL:
         attributes_copy = copy.deepcopy(attributes)
         for type_name in attributes_copy:
             if (
-                    not type_name.endswith("_attributes")
-                    or type_name.split("_attributes")[0] not in self.role_types
+                not type_name.endswith("_attributes")
+                or type_name.split("_attributes")[0] not in self.role_types
             ):
                 raise ValueError("Invalid attribute name: " + type_name)
             attributes_copy[type_name].update({"memory": memory})

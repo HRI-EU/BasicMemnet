@@ -62,13 +62,18 @@ uuid = str(ObjectID())
 
 ### Installation
 
-The easiest way to use BasicMemet is simply installing it into your own virtual environment or user site-packages with 
+#### Using pip
 
+The easiest way to use BasicMemet is simply installing it into your own virtual environment or user site-packages.
 ```bash
 pip install git+https://github.com/HRI-EU/BasicMemnet
 ```
+Have a look at the example script on how to use the BasicMemNet package in your code. 
+https://github.com/HRI-EU/BasicMemnet/blob/master/examples/example.py
 
-Alteratively, you can clone the whole repository with 
+#### Working with the Source Code
+
+Alternatively, you can clone the whole repository with and run an example script.
 ```bash
 git clone https://github.com/HRI-EU/BasicMemnet.git
 cd BasicMemNet
@@ -88,13 +93,17 @@ pip install --upgrade pip
 pip install -e .
 ```
 
-### Example
-
-You can find an example script that loads the action pattern example in examples/example.py. In the constructor, you 
+You can find an example script that loads an action pattern example json file in examples/example.py. In the constructor, you 
 can switch between making use of WordNet or not. By default, it is switched off for a fast initial run. 
 
 ```bash
 python -m examples.example
+```
+
+### Unit Test
+
+```bash
+python -m unittest tests.test_dsl
 ```
 
 #### References

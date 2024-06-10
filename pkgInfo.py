@@ -36,14 +36,16 @@
 
 sqLevel = "basic"
 
-sqOptOutRules = ['C10']
+sqOptOutRules = ["C10"]
 
-sqOptOutDirs = ['venv']
+sqOptOutDirs = ["venv"]
 
-sqComments    = { 'PY05': 'src/memnet.py auto generates its API on the fly, which causes the error because the '
-                          'functions that are used in the examples file are not existing in the source code.' }
+sqComments = {
+    "PY05": "src/memnet.py auto generates its API on the fly, which causes the error because the "
+    "functions that are used in the examples file are not existing in the source code."
+}
 
-scripts = {'unittest': 'unittest.sh'}
+scripts = {"unittest": "unittest.sh"}
 
 copyright = """# Copyright (C) 2023, Honda Research Institute Europe GmbH.
 # All rights reserved.
