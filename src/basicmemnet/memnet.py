@@ -41,7 +41,6 @@ from bson import ObjectId
 import json
 import copy
 import os
-import sys
 
 # TODO: _find_isomorphic_subgraphs including has_tool / has_object ... links
 

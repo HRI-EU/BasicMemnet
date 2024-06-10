@@ -2,11 +2,10 @@
 name = "basicmemnet"
 version = "0.1.0"
 description = "minimal memnet implementation"
-authors = ["Your Name <you@example.com>"]
+authors = ["Joerg Deigmoeller <joerg.deigmoeller@honda-ri.de>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-pip = "24.0"
 python = "^3.8"
 matplotlib = "3.7.5"
 networkx = "3.1"

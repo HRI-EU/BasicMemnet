@@ -81,6 +81,9 @@ source venv/bin/activate
 # It is also recommended to download GraphViz from https://graphviz.org/download, locate the Graphviz\bin folder and add it to the PATH variable in your system variables. Otherwise you will use the built-in graph layout from networkX.
 venv\Scripts\activate
 
+# ensure having the latest pip version - required for "pip install -e" option
+pip install --upgrade pip
+
 # use -e option to modify the basicmemnet code without re-installtion
 pip install -e .
 ```
