@@ -37,7 +37,7 @@
 import unittest
 import sys
 import os
-from src import memnet
+from basicmemnet import memnet
 
 
 class TestMemNet(unittest.TestCase):

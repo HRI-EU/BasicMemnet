@@ -36,8 +36,8 @@
 
 import os
 import sys
-from src.basic_memnet import memnet
-from src.basic_memnet import plot_graph
+from basicmemnet import memnet
+from basicmemnet import plot_graph
 
 md = memnet.DSL(use_wordnet=False, json_file=os.path.join(sys.path[0], "data", "action_patterns.json"))
 pg = plot_graph.PlotGraph()

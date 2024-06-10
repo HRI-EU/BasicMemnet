@@ -36,16 +36,18 @@
 
 import networkx as nx
 from networkx.algorithms import isomorphism
-from src.basic_memnet import word2memnet
+from basicmemnet import word2memnet
 from bson import ObjectId
 import json
 import copy
+import os
+import sys
 
 # TODO: _find_isomorphic_subgraphs including has_tool / has_object ... links
 
 
 class DSL:
-    def __init__(self, use_wordnet=False, json_file="action_patterns.json"):
+    def __init__(self, use_wordnet=False, json_file=os.path.join("data", "action_patterns.json")):
         #  define role and memory types
         self.role_types = ["action", "object", "tool", "location", "time", "agent"]
         self.memory_types = ["stm", "ltm", "mtm", None]
