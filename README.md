@@ -76,7 +76,7 @@ https://github.com/HRI-EU/BasicMemnet/blob/master/examples/example.py
 Alternatively, you can clone the whole repository with and run an example script.
 ```bash
 git clone https://github.com/HRI-EU/BasicMemnet.git
-cd BasicMemNet
+cd BasicMemnet
 python -m venv venv
 
 # For Linux, use this line
@@ -100,7 +100,7 @@ can switch between making use of WordNet or not. By default, it is switched off 
 python -m examples.example
 ```
 
-### Unit Test
+For running a unit test, just call
 
 ```bash
 python -m unittest tests.test_dsl
