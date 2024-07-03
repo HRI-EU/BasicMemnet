@@ -63,6 +63,7 @@ class DSL:
             self.load_from_json(json_file)
 
     def load_from_json(self, file_path):
+        print(f"loading {file_path} ...")
         with open(file_path, "r") as file:
             nodes = json.load(file)
             for node in nodes:
@@ -71,9 +72,16 @@ class DSL:
                 self.create_linked_node(
                     parent_attributes, node_attributes, link_type=node["link"]
                 )
+        print("loading finished")
 
-    def get_graphs(self):
-        return [self.graph]
+    # export graph in gml format
+    def export_graph(self, graph_file):
+        nx.write_gml(self.graph, graph_file)
+
+    # import graph from gml format
+    def import_graph(self, graph_file):
+        self.graph = nx.read_gml(graph_file)
+
 
     def _find_sub_graphs(self, return_type="action", memory=None, **attributes):
         attributes_copy = copy.deepcopy(attributes)
