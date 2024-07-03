@@ -75,11 +75,11 @@ class DSL:
         print("loading finished")
 
     # export graph in gml format
-    def export_graph(self, graph_file):
+    def export_gml(self, graph_file):
         nx.write_gml(self.graph, graph_file)
 
     # import graph from gml format
-    def import_graph(self, graph_file):
+    def import_gml(self, graph_file):
         self.graph = nx.read_gml(graph_file)
 
 
