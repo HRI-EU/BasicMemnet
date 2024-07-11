@@ -96,6 +96,9 @@ class DSL:
         expanded_sub_graphs = self._expand_to_full_pattern(sub_graphs, return_type)
 
         return expanded_sub_graphs
+    
+    def get_graph(self):
+        return self.graph
 
     @staticmethod
     def get_hub_nodes(sub_graphs):
