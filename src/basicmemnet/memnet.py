@@ -100,6 +100,11 @@ class DSL:
     def get_graph(self):
         return self.graph
 
+    def delete_sub_graphs(self, sub_graphs):
+        for sub_graph in sub_graphs:
+            sub_graph_nodes = list(sub_graph.nodes())
+            self.graph.remove_nodes_from(sub_graph_nodes)
+
     @staticmethod
     def get_hub_nodes(sub_graphs):
         hub_nodes = []
