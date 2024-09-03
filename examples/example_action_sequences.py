@@ -39,30 +39,33 @@ import sys
 from basicmemnet import memnet
 from basicmemnet import plot_graph
 
-md = memnet.DSL()
-md.import_gml(os.path.join(sys.path[0], "data", "sequence_action_patterns.gml"))
+md_train = memnet.DSL()
+md_test = memnet.DSL()
+md_train.import_gml(os.path.join(sys.path[0], "data", "action_sequences", "train_graph.gml"))
+md_test.import_gml(os.path.join(sys.path[0], "data", "action_sequences", "test_graph.gml"))
 pg = plot_graph.PlotGraph()
 
-sub_graphs = md.get_stm_actions(
-    action_attributes={"type": "action"}
-)
+train_sub_graphs = md_train.get_stm_actions(action_attributes={"type": "action"})
+test_sub_graphs = md_test.get_stm_actions(action_attributes={"type": "action"})
 
-paths1_utterances = ["approach", "lift", "approach", "pour", "place"]
 best_match_score = 0
 best_match_graph = None
 
-for sub_graph in sub_graphs:
-    score = md.find_best_matching_path(paths1_utterances=paths1_utterances, sub_graph_2=sub_graph, link_type="has_next")
-    if score > best_match_score:
-        best_match_score = score
-        best_match_graph = sub_graph
-        print(f"currently best score: {score}")
-
-hub_node_1 = md.get_hub_nodes([best_match_graph])[0]
-parent_sub_graphs = md.get_parents(action_attributes={"uuid": hub_node_1})
-hub_node_2 = md.get_hub_nodes(parent_sub_graphs)[0]
-print(hub_node_1, hub_node_2)
-pg.plot(parent_sub_graphs)
+for test_sub_graph in test_sub_graphs:
+    for train_sub_graph in train_sub_graphs:
+        score = md_train.find_best_matching_path(sub_graph_1=test_sub_graph,
+                                                 sub_graph_2=train_sub_graph, link_type="has_next")
+        if score > best_match_score:
+            best_match_score = score
+            best_matching_graphs = [test_sub_graph, train_sub_graph]
+    best_matching_train_uuids = md_train.get_hub_nodes([train_sub_graph])
+    best_matching_test_uuids = md_test.get_hub_nodes([test_sub_graph])
+    parent_test_subgraphs = md_test.get_parents(action_attributes={"uuid": best_matching_test_uuids[0]})
+    parent_train_subgraphs = md_train.get_parents(action_attributes={"uuid": best_matching_train_uuids[0]})
+    parent_test_subgraph = list(parent_test_subgraphs[0].nodes(data=True))
+    parent_train_subgraph = list(parent_train_subgraphs[0].nodes(data=True))
+    print(parent_test_subgraph[0][1]["utterances"], parent_train_subgraph[0][1]["utterances"])
+    print(100*"=")
 
 
 

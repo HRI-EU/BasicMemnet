@@ -83,8 +83,9 @@ class DSL:
     def import_gml(self, graph_file):
         self.graph = nx.read_gml(graph_file)
 
-    def __extract_longest_paths(self, G, edge_attribute):
-        subgraph = nx.DiGraph([(u, v) for u, v, d in G.edges(data=True) if d.get('link_type') == edge_attribute])
+    def __extract_longest_paths(self, sub_graph, edge_attribute, filter_attribute=None):
+        subgraph = nx.DiGraph([(u, v) for u, v, d in
+                               sub_graph.edges(data=True) if d.get('link_type') == edge_attribute])
         starting_nodes = [node for node in subgraph.nodes() if subgraph.in_degree(node) == 0]
 
         all_longest_paths = []
@@ -98,7 +99,18 @@ class DSL:
                 except nx.NetworkXNoPath:
                     continue  # No path from source to target
 
-        return self.__filter_redundant_paths(all_longest_paths)
+        filtered_paths = self.__filter_redundant_paths(all_longest_paths)
+        all_longest_paths = []
+        for filtered_path in filtered_paths:
+            filtered_nodes_data = []
+            for filtered_node_id in filtered_path:
+                node_data = sub_graph.nodes[filtered_node_id]
+                if filter_attribute in node_data:
+                    filtered_nodes_data.append(node_data[filter_attribute])
+                else:
+                    filtered_nodes_data.append(sub_graph.nodes[filtered_node_id])
+            all_longest_paths.append(filtered_nodes_data)
+        return all_longest_paths
 
     @staticmethod
     def __filter_redundant_paths(paths):
@@ -138,27 +150,15 @@ class DSL:
             filtered_node_attributes = self.graph.nodes[node_id]
         return filtered_node_attributes
 
-    def find_best_matching_path(self, sub_graph_1=None, sub_graph_2=None, link_type="has_next",
-                                paths1_utterances=None, paths2_utterances=None):
-        if paths1_utterances is None:
-            paths1 = self.__extract_longest_paths(sub_graph_1, link_type)
-            paths1_utterances = []
-            for path in paths1:
-                for node in path:
-                    paths1_utterances.append(
-                        self.get_node_attributes(node, filter_attributes=["utterances"])["utterances"])
-            paths1_utterances = [item for sublist in paths1_utterances for item in sublist]
-        if paths2_utterances is None:
-            paths2 = self.__extract_longest_paths(sub_graph_2, link_type)
-            paths2_utterances = []
-            for path in paths2:
-                for node in path:
-                    paths2_utterances.append(
-                        self.get_node_attributes(node, filter_attributes=["utterances"])["utterances"])
-            paths2_utterances = [item for sublist in paths2_utterances for item in sublist]
+    def find_best_matching_path(self, sub_graph_1=None, sub_graph_2=None, link_type="has_next"):
+        paths1 = self.__extract_longest_paths(sub_graph_1, link_type, filter_attribute="utterances")
+        paths2 = self.__extract_longest_paths(sub_graph_2, link_type, filter_attribute="utterances")
+        paths1_utterances = [item for sublist in paths1 for item in sublist]
+        paths2_utterances = [item for sublist in paths2 for item in sublist]
         longest_matching_path = self.__compute_longest_common_subsequence(paths1_utterances, paths2_utterances)
         max_length = max(len(paths1_utterances), len(paths2_utterances))
-        return longest_matching_path / max_length
+        score = 0 if max_length == 0 else (longest_matching_path / max_length)
+        return score
 
     def _find_sub_graphs(self, return_type="action", memory=None, **attributes):
         attributes_copy = copy.deepcopy(attributes)
@@ -181,6 +181,14 @@ class DSL:
         for sub_graph in sub_graphs:
             sub_graph_nodes = list(sub_graph.nodes())
             self.graph.remove_nodes_from(sub_graph_nodes)
+
+    def insert_sub_graphs(self, sub_graphs):
+        inserted_sub_graphs = []
+        for sub_graph in sub_graphs:
+            self.graph.add_nodes_from(sub_graph.nodes(data=True))
+            self.graph.add_edges_from(sub_graph.edges(data=True))
+            inserted_sub_graphs.append()
+        return self.graph.subgraph(sub_graph.nodes()).copy()
 
     @staticmethod
     def get_hub_nodes(sub_graphs):
@@ -232,7 +240,7 @@ class DSL:
                 path = []
             path.append(node)
             for predecessor in self.graph.predecessors(node):
-                if self.graph.edges[predecessor, node].get("link_type") == "spec_to":
+                if self.graph.edges[predecessor, node].get("link_type") == "has_element":
                     traverse_upwards(predecessor, path)
             return path
 
