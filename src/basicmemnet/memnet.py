@@ -66,13 +66,14 @@ class DSL:
         print(f"loading {file_path} ...")
         with open(file_path, "r") as file:
             nodes = json.load(file)
-            for node in nodes:
-                node_attributes = node["node_attributes"]
-                parent_attributes = node.get("parent_attributes", {})
+            for node_ix in range(len(nodes)):
+                print(f"{node_ix} / {len(nodes)} nodes inserted", end="\r")
+                node_attributes = nodes[node_ix]["node_attributes"]
+                parent_attributes = nodes[node_ix].get("parent_attributes", {})
                 self.create_linked_node(
-                    parent_attributes, node_attributes, link_type=node["link"]
+                    parent_attributes, node_attributes, link_type=nodes[node_ix]["link"]
                 )
-        print("loading finished")
+        print("loading finished", end="\n")
 
     # export graph in gml format
     def export_gml(self, graph_file):
@@ -82,6 +83,82 @@ class DSL:
     def import_gml(self, graph_file):
         self.graph = nx.read_gml(graph_file)
 
+    def __extract_longest_paths(self, G, edge_attribute):
+        subgraph = nx.DiGraph([(u, v) for u, v, d in G.edges(data=True) if d.get('link_type') == edge_attribute])
+        starting_nodes = [node for node in subgraph.nodes() if subgraph.in_degree(node) == 0]
+
+        all_longest_paths = []
+        for source in starting_nodes:
+            # Get all nodes reachable from the source
+            reachable_nodes = nx.descendants(subgraph, source)
+            for target in reachable_nodes:
+                try:
+                    path = nx.dag_longest_path(subgraph)
+                    all_longest_paths.append(path)
+                except nx.NetworkXNoPath:
+                    continue  # No path from source to target
+
+        return self.__filter_redundant_paths(all_longest_paths)
+
+    @staticmethod
+    def __filter_redundant_paths(paths):
+        # Remove paths that are subpaths of any other path
+        filtered_paths = []
+        sorted_paths = sorted(paths, key=len, reverse=True)  # Sort paths by length, longest first
+        for path in sorted_paths:
+            if not any(set(path).issubset(set(other_path)) for other_path in filtered_paths):
+                filtered_paths.append(path)
+        return filtered_paths
+
+    @staticmethod
+    def __compute_longest_common_subsequence(sequence1, sequence2):
+        # Create a 2D array to store lengths of longest common subsequence.
+        m = len(sequence1)
+        n = len(sequence2)
+        L = [[0] * (n + 1) for i in range(m + 1)]
+
+        # Building the matrix in bottom-up fashion
+        for i in range(1, m + 1):
+            for j in range(1, n + 1):
+                if sequence1[i - 1] == sequence2[j - 1]:
+                    L[i][j] = L[i - 1][j - 1] + 1
+                else:
+                    L[i][j] = max(L[i - 1][j], L[i][j - 1])
+
+        return L[m][n]
+
+    def get_node_attributes(self, node_id, filter_attributes=None):
+        filtered_node_attributes = {}
+        if filter_attributes:
+            node_attributes = self.graph.nodes[node_id]
+            for filter_attribute in filter_attributes:
+                if filter_attribute in node_attributes:
+                    filtered_node_attributes.update({filter_attribute: node_attributes[filter_attribute]})
+        else:
+            filtered_node_attributes = self.graph.nodes[node_id]
+        return filtered_node_attributes
+
+    def find_best_matching_path(self, sub_graph_1=None, sub_graph_2=None, link_type="has_next",
+                                paths1_utterances=None, paths2_utterances=None):
+        if paths1_utterances is None:
+            paths1 = self.__extract_longest_paths(sub_graph_1, link_type)
+            paths1_utterances = []
+            for path in paths1:
+                for node in path:
+                    paths1_utterances.append(
+                        self.get_node_attributes(node, filter_attributes=["utterances"])["utterances"])
+            paths1_utterances = [item for sublist in paths1_utterances for item in sublist]
+        if paths2_utterances is None:
+            paths2 = self.__extract_longest_paths(sub_graph_2, link_type)
+            paths2_utterances = []
+            for path in paths2:
+                for node in path:
+                    paths2_utterances.append(
+                        self.get_node_attributes(node, filter_attributes=["utterances"])["utterances"])
+            paths2_utterances = [item for sublist in paths2_utterances for item in sublist]
+        longest_matching_path = self.__compute_longest_common_subsequence(paths1_utterances, paths2_utterances)
+        max_length = max(len(paths1_utterances), len(paths2_utterances))
+        return longest_matching_path / max_length
 
     def _find_sub_graphs(self, return_type="action", memory=None, **attributes):
         attributes_copy = copy.deepcopy(attributes)

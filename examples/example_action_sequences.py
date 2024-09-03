@@ -22,7 +22,7 @@
 #     endorse or promote products derived from this software without
 #     specific prior written permission.
 #
-# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
+# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS"" AND ANY EXPRESS OR
 # IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
 # WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 # DISCLAIMED. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT,
@@ -44,10 +44,26 @@ md.import_gml(os.path.join(sys.path[0], "data", "sequence_action_patterns.gml"))
 pg = plot_graph.PlotGraph()
 
 sub_graphs = md.get_stm_actions(
-    action_attributes={"utterances": ["cut"]}
+    action_attributes={"type": "action"}
 )
+
+paths1_utterances = ["approach", "lift", "approach", "pour", "place"]
+best_match_score = 0
+best_match_graph = None
+
 for sub_graph in sub_graphs:
-    pg.plot([sub_graph])
+    score = md.find_best_matching_path(paths1_utterances=paths1_utterances, sub_graph_2=sub_graph, link_type="has_next")
+    if score > best_match_score:
+        best_match_score = score
+        best_match_graph = sub_graph
+        print(f"currently best score: {score}")
+
+hub_node_1 = md.get_hub_nodes([best_match_graph])[0]
+parent_sub_graphs = md.get_parents(action_attributes={"uuid": hub_node_1})
+hub_node_2 = md.get_hub_nodes(parent_sub_graphs)[0]
+print(hub_node_1, hub_node_2)
+pg.plot(parent_sub_graphs)
+
 
 
 
