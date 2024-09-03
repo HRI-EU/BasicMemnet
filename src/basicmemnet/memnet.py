@@ -153,8 +153,8 @@ class DSL:
     def find_best_matching_path(self, sub_graph_1=None, sub_graph_2=None, link_type="has_next"):
         paths1 = self.__extract_longest_paths(sub_graph_1, link_type, filter_attribute="utterances")
         paths2 = self.__extract_longest_paths(sub_graph_2, link_type, filter_attribute="utterances")
-        paths1_utterances = [item for sublist in paths1 for item in sublist]
-        paths2_utterances = [item for sublist in paths2 for item in sublist]
+        paths1_utterances = [utterance[0] for path1 in paths1 for utterance in path1]
+        paths2_utterances = [utterance[0] for path2 in paths2 for utterance in path2]
         longest_matching_path = self.__compute_longest_common_subsequence(paths1_utterances, paths2_utterances)
         max_length = max(len(paths1_utterances), len(paths2_utterances))
         score = 0 if max_length == 0 else (longest_matching_path / max_length)
@@ -231,8 +231,8 @@ class DSL:
         sub_graphs = self._find_isomorphic_subgraphs(**attributes)
         return sub_graphs
 
-    def get_parents(self, **attributes):
-        sub_graphs = self._find_isomorphic_subgraphs(**attributes)
+    def get_parents(self, link_type="spec_to", sub_graph=None, **attributes):
+        sub_graphs = self._find_isomorphic_subgraphs(sub_graph=sub_graph, **attributes)
         hub_nodes = self.get_hub_nodes(sub_graphs)
 
         def traverse_upwards(node, path=None):
@@ -240,7 +240,7 @@ class DSL:
                 path = []
             path.append(node)
             for predecessor in self.graph.predecessors(node):
-                if self.graph.edges[predecessor, node].get("link_type") == "has_element":
+                if self.graph.edges[predecessor, node].get("link_type") == link_type:
                     traverse_upwards(predecessor, path)
             return path
 
@@ -257,21 +257,23 @@ class DSL:
 
         return sub_graph_list
 
-    def _find_isomorphic_subgraphs(self, **attributes):
-        pattern_graph = nx.DiGraph()
-
-        for attr_type, attr_values in attributes.items():
-            type_name = attr_type.split("_attributes")[0]
-            if attr_values:
-                if type_name in self.role_types:
-                    attr_values = {"type": type_name, **attr_values}
-                else:
-                    attr_values = {**attr_values}
-                pattern_graph.add_node(f"{type_name}_node", **attr_values)
-                if type_name != "action" and "action_attributes" in attributes:
-                    pattern_graph.add_edge(
-                        "action_node", f"{type_name}_node", link_type="has_part"
-                    )
+    def _find_isomorphic_subgraphs(self, sub_graph=None, **attributes):
+        if sub_graph is None:
+            pattern_graph = nx.DiGraph()
+            for attr_type, attr_values in attributes.items():
+                type_name = attr_type.split("_attributes")[0]
+                if attr_values:
+                    if type_name in self.role_types:
+                        attr_values = {"type": type_name, **attr_values}
+                    else:
+                        attr_values = {**attr_values}
+                    pattern_graph.add_node(f"{type_name}_node", **attr_values)
+                    if type_name != "action" and "action_attributes" in attributes:
+                        pattern_graph.add_edge(
+                            "action_node", f"{type_name}_node", link_type="has_part"
+                        )
+        else:
+            pattern_graph = sub_graph
 
         def match_func(node1, node2):
             if ("type" in node1) and ("type" in node2):
