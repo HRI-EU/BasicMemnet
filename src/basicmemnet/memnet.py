@@ -231,10 +231,9 @@ class DSL:
         sub_graphs = self._find_isomorphic_subgraphs(**attributes)
         return sub_graphs
 
-    def get_parents(self, link_type="spec_to", sub_graph=None, **attributes):
-        sub_graphs = self._find_isomorphic_subgraphs(sub_graph=sub_graph, **attributes)
-        hub_nodes = self.get_hub_nodes(sub_graphs)
-
+    def get_parents(self, sub_graph, link_type="spec_to"):
+        all_paths = []
+        hub_nodes = self.get_hub_nodes([sub_graph])
         def traverse_upwards(node, path=None):
             if path is None:
                 path = []
@@ -244,18 +243,11 @@ class DSL:
                     traverse_upwards(predecessor, path)
             return path
 
-        all_paths = []
         for node in hub_nodes:
-            paths = traverse_upwards(node)
-            all_paths.append(paths)
+            path = traverse_upwards(node)
+            all_paths.append([self.graph.nodes[path[-1]]])
 
-        # Convert paths to subgraphs
-        sub_graph_list = []
-        for path in all_paths:
-            sub_graph = self.graph.subgraph(path).copy()
-            sub_graph_list.append(sub_graph)
-
-        return sub_graph_list
+        return all_paths
 
     def _find_isomorphic_subgraphs(self, sub_graph=None, **attributes):
         if sub_graph is None:
