@@ -43,8 +43,8 @@ from basicmemnet import plot_graph
 
 md_train = memnet.DSL()
 md_test = memnet.DSL()
-md_train.import_gml(os.path.join(sys.path[0], "data", "action_sequences", "train_graph.gml"))
-md_test.import_gml(os.path.join(sys.path[0], "data", "action_sequences", "test_graph.gml"))
+md_train.import_gml(os.path.join(sys.path[0], "data", "action_sequences", "action_sequences_train.gml"))
+md_test.import_gml(os.path.join(sys.path[0], "data", "action_sequences", "action_sequences_test.gml"))
 pg = plot_graph.PlotGraph()
 
 train_sub_graphs = md_train.get_stm_actions(action_attributes={"type": "action"})
