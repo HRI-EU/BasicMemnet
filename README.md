@@ -68,11 +68,8 @@ uuid = str(ObjectID())
 The easiest way to use BasicMemet is simply installing it into your own virtual environment or user site-packages.
 ```bash
 pip install git+https://github.com/HRI-EU/BasicMemnet
-```
-Have a look at the example script on how to use the BasicMemNet package in your code. 
-https://github.com/HRI-EU/BasicMemnet/blob/master/examples/example.py
 
-#### Working with the Source Code
+```#### Working with the Source Code
 
 Alternatively, you can clone the whole repository and run an example script as descibed below.
 ```bash
@@ -98,13 +95,14 @@ You can find an example script that loads an action pattern example json file in
 can switch between making use of WordNet or not. By default, it is switched off for a fast initial run, which you can find here (cf. [Memory Nets Example](https://github.com/HRI-EU/BasicMemnet/blob/master/examples/example.py#L42).
 
 ```bash
-python -m examples.example
+python -m examples/example.py
 ```
 
+A more complex example, loading the KIT Bimanual Action Dataset [4], can be found here:
 For running a unit test, just call
 
 ```bash
-python -m unittest tests.test_dsl
+python examples/example_action_sequences.py
 ```
 
 #### References
@@ -116,3 +114,4 @@ Engineering, and Knowledge Management.
 using Memory Nets. In Communications in Computer and Information Science.
 3. Deigmoeller, J., Smirnov, P., Wang, C., Takeuchi, J., and Eggert, J. (2022). Situational question answering using 
 memory nets. International Joint Conference on Knowledge Discovery, Knowledge Engineering, and Knowledge Management.
+4. F. Krebs, A. Meixner, I. Patzer and T. Asfour. “The KIT Bimanual Manipulation Dataset” 20th International Conference on Humanoid Robots, 2020.

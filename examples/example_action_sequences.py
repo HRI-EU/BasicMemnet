@@ -40,7 +40,7 @@ from basicmemnet import memnet
 from basicmemnet import plot_graph
 
 md = memnet.DSL()
-md.import_gml(os.path.join(sys.path[0], "data", "sequence_action_patterns.gml"))
+md.import_gml(os.path.join(sys.path[0], "..", "data", "action_sequences", "action_sequences.gml"))
 pg = plot_graph.PlotGraph()
 
 sub_graphs = md.get_stm_actions(
