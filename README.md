@@ -99,10 +99,9 @@ python -m examples/example.py
 ```
 
 A more complex example, loading the KIT Bimanual Action Dataset [4], can be found here:
-For running a unit test, just call
 
 ```bash
-python examples/example_action_sequences.py
+  python examples/example_action_sequences.py
 ```
 
 #### References
