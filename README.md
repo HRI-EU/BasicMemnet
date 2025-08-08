@@ -63,45 +63,39 @@ uuid = str(ObjectID())
 
 ### Installation
 
-#### Using pip
-
-The easiest way to use BasicMemet is simply installing it into your own virtual environment or user site-packages.
-```bash
-pip install git+https://github.com/HRI-EU/BasicMemnet
-
-```#### Working with the Source Code
-
-Alternatively, you can clone the whole repository and run an example script as descibed below.
 ```bash
 git clone https://github.com/HRI-EU/BasicMemnet.git
 cd BasicMemnet
 python -m venv venv
+```
 
-# For Linux, use this line
-source venv/bin/activate
+1. If you use **Linux**:
+```bash
+    source venv/bin/activate 
+```
 
-# For Windows, use this line
-# It is also recommended to download GraphViz from https://graphviz.org/download, locate the Graphviz\bin folder and add it to the PATH variable in your system variables. Otherwise you will use the built-in graph layout from networkX.
-venv\Scripts\activate
+2. If you use **Windows**, it is additionally recommended to download GraphViz from https://graphviz.org/download, locate the Graphviz\bin folder and add it to the PATH variable in your system variables. Otherwise you will use the built-in graph layout from networkX.
+```bash
+    call venv\Scripts\activate # Windows
+```
 
-# ensure having the latest pip version - required for "pip install -e" option
-pip install --upgrade pip
-
-# use -e option to modify the basicmemnet code without re-installtion
+```bash
 pip install -e .
 ```
 
-You can find an example script that loads an action pattern example json file in examples/example.py. In the constructor, you 
+### Examples
+
+You can find a simple example script that loads an action pattern example json file in examples/example.py. In the constructor, you 
 can switch between making use of WordNet or not. By default, it is switched off for a fast initial run, which you can find here (cf. [Memory Nets Example](https://github.com/HRI-EU/BasicMemnet/blob/master/examples/example.py#L42).
 
 ```bash
-python -m examples/example.py
+python -m examples.simple
 ```
 
-A more complex example, loading the KIT Bimanual Action Dataset [4], can be found here:
+For a more complex example published at [5], predicting actions on the KIT Bimanual Action Dataset [4], run:
 
 ```bash
-  python examples/example_action_sequences.py
+python -m examples.semantics25
 ```
 
 #### References
@@ -114,3 +108,4 @@ using Memory Nets. In Communications in Computer and Information Science.
 3. Deigmoeller, J., Smirnov, P., Wang, C., Takeuchi, J., and Eggert, J. (2022). Situational question answering using 
 memory nets. International Joint Conference on Knowledge Discovery, Knowledge Engineering, and Knowledge Management.
 4. F. Krebs, A. Meixner, I. Patzer and T. Asfour. “The KIT Bimanual Manipulation Dataset” 20th International Conference on Humanoid Robots, 2020.
+5. M. Arustashvili, J. Deigmoeller, H. Paulheim. "Knowledge Graph Completion for Action Prediction on Situational Graphs – A Case Study on Household Tasks" 21st International Conference on Semantic Systems, 2025 
